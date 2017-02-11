@@ -1,0 +1,20 @@
+<header class="w3-container w3-light-grey w3-padding-16">
+    <h3 id="welcome">Select a list to Edit</h3>
+  </header>
+  <div class="w3-container w3-light-grey w3-padding-4">
+    <div class="w3-row w3-margin-top">
+    <form name="addForm">
+      <div class="w3-col s10">
+        <input placeholder="Create a new list" class="w3-input w3-border w3-padding">
+      </div>
+      <div class="w3-col s2">
+        <button ng-click="addItem()" class="w3-btn w3-padding w3-green">Add&raquo;</button>
+      </div>
+    </form>
+    </div>
+    <ul class="w3-ul">
+    <li ng-repeat="x in lists" class="w3-padding-16"><a ng-click="selectList(x)">{{x.info.listName}}</a></li>
+  </ul>
+      <a ng-click="goto('/Edit')">Edit</a>
+  </div>
+  

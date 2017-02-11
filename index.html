@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+        <base href="/Shopping-List-App/">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
+        <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+        <script src="script/jquery.toast.min.js"></script>
+        <script src="script/Shopping-List.js"></script>
+        <script src="script/controllers/SelectListController.js"></script>
+        <script src="script/controllers/EditListController.js"></script>
+        <script src="script/shoppingList.js"></script>
+        <script src="script/DBAccess.js"></script>
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+        <link rel="stylesheet" href="css/jquery.toast.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+        <style>
+            #listName {font-weight: bold;}
+            input[type=checkbox].w3-check,input[type=radio].w3-radio{width:24px;height:24px;position:relative;top:0px; padding-right: 6px; display: block; float: left;}
+        </style>
+        <script>
+        var userId = "";
+        var usersName = "";
+          
+
+          // Here we run a very simple test of the Graph API after login is
+          // successful.  See statusChangeCallback() for when this call is made.
+          function getAPI(callback) {
+            console.log('Welcome!  Fetching your information.... ');
+            FB.api('/me', function(response) {
+                usersId = response.id;
+                usersName = response.name;
+                console.log('Successful login for: ' + response.name);
+                configAWS();
+                callback();
+            });
+          }
+
+        var myLists = {};
+        var myListObj = [];
+        function configAWS() {
+            // set defaults so i have a list to test with
+            myListObj = new ShoppingList();
+            myListObj.facebookId = usersId;
+            myListObj.createDateTime = new Date(+new Date + 12096e5).valueOf().toString();
+
+            var item1 = new ShoppingListItem(false, false, "Milk");
+            var item2 = new ShoppingListItem(true, false, "Bread");
+            var item3 = new ShoppingListItem(false, false, "Cheese");
+            myListObj.info.currentUserName = usersName;
+            myListObj.info.listName = "My Shopping List";
+            myListObj.info.items = [item1, item2, item3];
+
+            console.log(JSON.stringify(myListObj))
+            //angular.element(document.getElementById('baseApp')).scope().getLists();
+            DBInit();
+            //End AWS Setup
+        }
+        </script>
+<body>    
+<div class="w3-card-2 w3-margin" style="max-width:400px;" id="baseApp" ng-app="myShoppingList" ng-cloak ng-view>
+  
+</div>
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button>
+
+</body>
+</html>
