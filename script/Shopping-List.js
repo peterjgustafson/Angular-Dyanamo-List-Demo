@@ -28,7 +28,6 @@ app.controller("defaultController", function($scope, $window, $location) {
     
     $scope.goto = function(path){
         $location.path(path);
-        $scope.$apply();
     }
     $window.fbAsyncInit = function() {
         FB.init({
@@ -64,21 +63,28 @@ app.controller("defaultController", function($scope, $window, $location) {
             console.log(response);
 
             if (response.status === 'connected') {
-                $scope.isLoggedInFb = true;
-              // Logged into your app and Facebook.
-                $scope.getFbUserInfo(function(){
+                  // Logged into your app and Facebook.
+                    $scope.getFbUserInfo(function(){
+                    
                     getAllLists(function(data){
                         myLists = data;
-                        $scope.$apply();
+                        $scope.$apply(function(){
+                            $scope.showFBLogin = false;
+                            $scope.isLoggedInFb = true;
+                        });
                     });
                 });
             } else if (response.status === 'not_authorized') {
               // The person is logged into Facebook, but not your app.
-              console.log('Please log  into this app.');
+                console.log('Please log  into this app.');
+                $scope.showFBLogin = true;
+                        $scope.$apply();
             } else {
               // The person is not logged into Facebook, so we're not sure if
               // they are logged into this app or not.
-              console.log('Please log into Facebook.');
+                console.log('Please log into Facebook.');
+                $scope.showFBLogin = true;
+                        $scope.$apply();
             }
           }
     $scope.getFbUserInfo = function(callback) {

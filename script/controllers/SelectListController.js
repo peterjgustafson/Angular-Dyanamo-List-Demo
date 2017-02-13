@@ -34,7 +34,7 @@ app.controller("selectListController", function($scope, $location) {
         myListObj.info.currentUserName = x.info.currentUserName;
         myListObj.info.listName = x.info.listName;
         myListObj.info.items = [];
-        if(x.info.items) {
+        if(x.info.items.length > 0) {
             JSON.parse(x.info.items).forEach(function (xItem) {
                 myListObj.info.items.push(new ShoppingListItem(xItem.isChecked, xItem.isCategory, xItem.item));
             });
