@@ -13,3 +13,14 @@ function ShoppingListItem(isChecked, isCategory, item) {
     this.isCategory = isCategory;
     this.item = item;
 }
+
+//Create a new shopping list
+function newList(fbid, name, listName) {
+    var newList = new ShoppingList();
+    newList.facebookId = fbid;
+    newList.createDateTime = new Date(+new Date + 12096e5).valueOf().toString();
+    newList.info.currentUserName = name;
+    newList.info.listName = listName;
+    newList.info.items = [];
+    return newList
+}

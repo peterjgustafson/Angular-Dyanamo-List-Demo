@@ -1,6 +1,12 @@
 <header class="w3-container w3-light-grey w3-padding-16">
-    <h3 id="welcome">Authenticating Facebook</h3>
-  </header>
-<a ng-click="goto('/Select')">Edit</a>
+    <h3 id="welcome">My Angular.js Amazon DynamoDB shopping / to-do list Application</h3>
+    <div id="welcomeMsg" class="w3-container w3-padding-4"></div>
+    <div id="facebookLogin" class="w3-container w3-padding-4" ng-show="showFBLogin">
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button></div>
+    <div id="goToSelect" class="w3-container w3-padding-4" ng-show="isLoggedInFb">
+        <button ng-click="goto('Select');" class="w3-btn w3-padding w3-green">Get Started&raquo;</button>
+    </div>
+</header>
   
   

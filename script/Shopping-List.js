@@ -1,28 +1,31 @@
-var app = angular.module("myShoppingList", ['ngRoute']);
+var app = angular.module("myShoppingList", ['ngRoute','ngDraggable']);
 app.config(function($routeProvider) {
-        //$locationProvider.html5Mode(true);
-        $routeProvider
-            // route for the home page
-            .when('/Edit', {
-                templateUrl : 'views/EditListView.html',
-                controller  : 'editListController'
-            })
-        
-            .when('/Select', {
-                templateUrl : 'views/SelectListView.html',
-                controller  : 'selectListController'
-            })
-            
-            .when('/', {
-                templateUrl : 'views/DefaultView.html',
-                controller  : 'defaultController'
-            })
+    //$locationProvider.html5Mode(true);
+    $routeProvider
+        // route for the home page
+        .when('/Edit', {
+            templateUrl : 'views/EditListView.html',
+            controller  : 'editListController'
+        })
+
+        .when('/Select', {
+            templateUrl : 'views/SelectListView.html',
+            controller  : 'selectListController'
+        })
+
+        .when('/', {
+            templateUrl : 'views/DefaultView.html',
+            controller  : 'defaultController'
+        })
             
 });
 app.config(['$locationProvider', function ($locationProvider) {
     $locationProvider.html5Mode(true);
 }]);
 app.controller("defaultController", function($scope, $window, $location) {
+    $scope.showFBLogin = false;
+    $scope.isLoggedInFb = false;
+    
     $scope.goto = function(path){
         $location.path(path);
         $scope.$apply();
@@ -61,9 +64,13 @@ app.controller("defaultController", function($scope, $window, $location) {
             console.log(response);
 
             if (response.status === 'connected') {
+                $scope.isLoggedInFb = true;
               // Logged into your app and Facebook.
-                getAPI(function(){
-                $scope.goto("Select");
+                $scope.getFbUserInfo(function(){
+                    getAllLists(function(data){
+                        myLists = data;
+                        $scope.$apply();
+                    });
                 });
             } else if (response.status === 'not_authorized') {
               // The person is logged into Facebook, but not your app.
@@ -73,5 +80,13 @@ app.controller("defaultController", function($scope, $window, $location) {
               // they are logged into this app or not.
               console.log('Please log into Facebook.');
             }
+          }
+    $scope.getFbUserInfo = function(callback) {
+            FB.api('/me', function(response) {
+                usersId = response.id;
+                usersName = response.name;
+                console.log('Successful FB login for: ' + response.name);
+                callback();
+            });
           }
     });

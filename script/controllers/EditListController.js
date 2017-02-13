@@ -1,20 +1,38 @@
-app.controller("editListController", function($scope) {
-    /*$scope.listName = myListObj.listName;
+app.controller("editListController", function($scope, $location) {
     
-    for (var i = 0; i < myListObj.items.length; i++) {
-        $scope.products.push(myListObj.items[i]);
-    }*/
-    //DBInit();
     $scope.products = [];
+    $scope.currentItem = "";
+    $scope.currentItemIndex = 0;
+    $scope.touchLocked = false;
+    
+    $("#listTitleInput").hide();
+    
+    if (typeof usersId == "undefined" || usersId == 0) {
+        $location.path("/");
+        return
+    }
+    
     if(myListObj.info.items != "undefined")
         $scope.products = myListObj.info.items;
     
     if(myListObj.info != "undefined")
         $scope.listName = myListObj.info.listName;
-    $scope.currentItem = "";
-    $scope.currentItemIndex = 0;
-    $("#undo-button").hide();
-    $("#listTitleInput").hide();
+    
+    //look for the back button or navigation other than from interating with the ui
+    /*$scope.$on('$locationChangeStart', function(event, newUrl, oldUrl) {
+
+        console.log(newUrl)
+        
+        console.log(oldUrl)
+        getAllLists(function(data){
+            event.preventDefault();
+            myLists = data;
+            $scope.$apply();
+            $scope.goto("Select");
+        });
+        
+    });*/
+    
     //Listen for scope change events 
     $scope.$watch('products', function(newValue, oldValue){
         console.log(JSON.stringify($scope.products));
@@ -24,13 +42,16 @@ app.controller("editListController", function($scope) {
         console.log(JSON.stringify($scope.listName));
         if(newValue != oldValue){
             myListObj.info.listName = newValue;
-            createItem();
+            createItem(myListObj);
             console.log("title changed to " + newValue);
-            //$scope.listProducts();
             return;
         }
         
     }, true);
+    $scope.goto = function(path){
+        $location.path(path);
+        $scope.$apply();
+    }
     $scope.listProducts = function () {
         $scope.listName = myListObj.info.listName;
         $scope.products = [];
@@ -55,7 +76,6 @@ app.controller("editListController", function($scope) {
         return;
     }
     $scope.addItem = function () {
-        $("#undo-button").hide();
         if (!$scope.addMe) {return;}
         $.toast().reset('all');
         
@@ -65,18 +85,16 @@ app.controller("editListController", function($scope) {
             $scope.products.push(new ShoppingListItem(false, false, $scope.addMe));
             $scope.addMe = "";
             myListObj.info.items = $scope.products;
-            createItem();
+            createItem(myListObj);
             return;
         } else {
         $.toast({
             text: "The item '" + $scope.addMe + "' was already in your shopping list.",
-            hideAfter: 1500,
+            hideAfter: 2500,
             position : 'bottom-center',
             showHideTransition: "slide"
         });
-        //$scope.errortext = "The item '" + $scope.addMe + "' is already in your shopping list.";
-        //$("#errorText").show();
-        ///$("#errorText").fadeOut(1800);
+            
         }
         $("#addField").blur();
         $scope.addMe = "";
@@ -103,9 +121,9 @@ app.controller("editListController", function($scope) {
         $scope.products.splice(x, 1);
         myListObj.info.items = $scope.products;
         
-        createItem();
+        createItem(myListObj);
         $.toast({
-            text: $scope.currentItemName + 'has been deleted from your list.' + '<a href="javascript: angular.element(document.getElementById(\'baseApp\')).scope().undo();">undo</a>',
+            text: $scope.currentItemName + ' has been deleted from your list.' + '<a href="javascript: angular.element(document.getElementById(\'baseApp\')).scope().undo();">undo</a>',
             hideAfter: 5000,
             position : 'bottom-center',
             showHideTransition: "slide"
@@ -120,7 +138,7 @@ app.controller("editListController", function($scope) {
         
         myListObj.info.items = $scope.products;
         
-        createItem();
+        createItem(myListObj);
         $.toast().reset('all');
         $.toast({
             text: $scope.currentItemName + ' has been restored.',
@@ -130,4 +148,22 @@ app.controller("editListController", function($scope) {
         });
         $scope.$apply();
     }
+    $scope.onDropComplete = function (index, obj, evt) {
+        $scope.touchLocked = false;
+        var otherObj = $scope.products[index];
+        var otherIndex = $scope.products.indexOf(obj);
+        var tempObject = obj;
+        $scope.products.splice(otherIndex, 1);
+        $scope.products.splice(index, 0, tempObject);
+        myListObj.info.items = $scope.products;
+        createItem(myListObj);
+    }
+    $scope.onDragStart = function() {
+        $scope.touchLocked = true;
+    }
+    $('#appBody').bind('touchmove',function(e){
+        if($scope.touchLocked)  
+            e.preventDefault();
+    });
+        
 });

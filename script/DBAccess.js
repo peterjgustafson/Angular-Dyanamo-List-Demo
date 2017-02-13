@@ -13,7 +13,8 @@ var dynamodb = new AWS.DynamoDB();
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 function DBInit() {
-    createDBTable();
+    //
+    //createDBTable();
     getAllLists();
 }
 
@@ -44,25 +45,24 @@ function createDBTable() {
     
 }
 
-function createItem() {
+function createItem(obj) {
     var params = {
         TableName :"extensibleLists",
         Item: {
-                "facebookId": myListObj.facebookId,
-                "createDateTime": myListObj.createDateTime,
+                "facebookId": obj.facebookId,
+                "createDateTime": obj.createDateTime,
                 "info": {
-                            "currentUserName": myListObj.info.currentUserName,
-                            "listName": myListObj.info.listName,
-                            "items": JSON.stringify(myListObj.info.items)
+                            "currentUserName": obj.info.currentUserName,
+                            "listName": obj.info.listName,
+                            "items": JSON.stringify(obj.info.items)
                 }
             }
     };
-    console.log(JSON.stringify(myListObj));
     docClient.put(params, function(err, data) {
         if (err) {
-            console.log("Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2)) + "\nObj: " + JSON.stringify(myListObj);
+            console.log("Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2)) + "\nObj: " + JSON.stringify(obj);
         } else {
-            console.log("PutItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2)) + "\n" + JSON.stringify(myListObj);
+            console.log("PutItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2)) + "\n" + JSON.stringify(obj);
         }
     });
 }
@@ -145,7 +145,7 @@ function getList(facebookId, createDateTime) {
         }
     });
 }
-function getAllLists() {
+function getAllLists(callback) {
     var params = {
         TableName : "extensibleLists", 
         KeyConditionExpression: "#fbid = :fbuserid",
@@ -153,7 +153,7 @@ function getAllLists() {
             "#fbid": "facebookId"
         },
         ExpressionAttributeValues: {
-            ":fbuserid": myListObj.facebookId
+            ":fbuserid": usersId
         }
     };
     
@@ -163,15 +163,10 @@ function getAllLists() {
         if (err) {
             console.log("Unable to query. Error: " + "\n" + JSON.stringify(err, undefined, 2));
         } else {
-           // myListObj.info.items = JSON.parse(data.Items[2].info.items);
-            angular.element(document.getElementById('baseApp')).scope().getLists();
-            /*data.Items.forEach(function(xList) {
-                myLists.facebookId = xList.facebookId;
-                myLists.createDateTime = xList.createDateTime;
-                myLists.listName = xList.listName;
-            });*/
-            myLists = data;
-            console.log(JSON.stringify(myLists));
+            console.log(JSON.stringify(data));
+            callback(data);
+            //myLists = data;
+            //angular.element(document.getElementById('baseApp')).scope().getLists();
         }
     });
 }
