@@ -2,13 +2,13 @@
     li:active,li:hover,li:focus{background-color: #dedede;text-decoration:underline;}
 </style>
 <header class="w3-container w3-light-grey w3-padding-4">
-    <h3 id="welcome">Select a list to Edit</h3>
+    <h3 id="welcome">Select a list to Edit...</h3>
   </header>
   <div class="w3-container w3-light-grey w3-padding-4">
     <div class="w3-row">
     <form ng-submit="addItem()" name="addForm">
       <div class="w3-col s10">
-        <input id="addField" placeholder="Create a new list" ng-model="addMe" class="w3-input w3-border w3-padding">
+        <input id="addField" placeholder="..create a new list" ng-model="addMe" class="w3-input w3-border w3-padding">
       </div>
       <div class="w3-col s2">
         <button ng-click="addItem()" class="w3-btn w3-padding w3-green">Add&raquo;</button>
@@ -17,6 +17,8 @@
     </div>
   </div>
     <ul class="w3-ul">
-    <li ng-repeat="x in lists" class="w3-padding-16" ng-click="selectList(x)">{{x.info.listName}}</li>
+    <li ng-repeat="x in lists" class="w3-padding-16"><div style="float: left; width: 90%; cursor: default;" ng-click="selectList(x)"><span style="font-size: 18px; line-height: 32px;">{{x.info.listName}}</span><br/>{{formatDate(x.createDateTime)}}</div>
+            <div style="font-size: 18px; line-height: 32px; float: left; width: 10%;"><span ng-click="removeList($index)" style="cursor:pointer;" class="w3-right w3-margin-right">X</span></div>
+            <div style="clear: both;"></div></li>
   </ul>
   

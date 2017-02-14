@@ -36,6 +36,8 @@ app.controller("editListController", function($scope, $location) {
     //Listen for scope change events 
     $scope.$watch('products', function(newValue, oldValue){
         console.log(JSON.stringify($scope.products));
+        myListObj.info.items = $scope.products;
+        createItem(myListObj);
         return;
     }, true);
     $scope.$watch('listName', function(newValue, oldValue){
@@ -119,9 +121,9 @@ app.controller("editListController", function($scope, $location) {
     	$scope.currentItemName = $scope.products[x].item;
     	//$scope.errortext = "The item '" + $scope.products[x] + "' has been removed from your shopping list.";
         $scope.products.splice(x, 1);
-        myListObj.info.items = $scope.products;
+        //myListObj.info.items = $scope.products;
         
-        createItem(myListObj);
+        //createItem(myListObj);
         $.toast({
             text: $scope.currentItemName + ' has been deleted from your list.' + '<a href="javascript: angular.element(document.getElementById(\'baseApp\')).scope().undo();">undo</a>',
             hideAfter: 5000,
@@ -138,7 +140,7 @@ app.controller("editListController", function($scope, $location) {
         
         myListObj.info.items = $scope.products;
         
-        createItem(myListObj);
+        //createItem(myListObj);
         $.toast().reset('all');
         $.toast({
             text: $scope.currentItemName + ' has been restored.',

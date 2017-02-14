@@ -23,8 +23,14 @@ app.config(['$locationProvider', function ($locationProvider) {
     $locationProvider.html5Mode(true);
 }]);
 app.controller("defaultController", function($scope, $window, $location) {
-    $scope.showFBLogin = false;
-    $scope.isLoggedInFb = false;
+    if(usersId == 0) {
+        $scope.showFBLogin = false;
+        $scope.isLoggedInFb = false;
+    }
+    else {
+        $scope.showFBLogin = false;
+        $scope.isLoggedInFb = true;
+    }
     
     $scope.goto = function(path){
         $location.path(path);
@@ -61,6 +67,7 @@ app.controller("defaultController", function($scope, $window, $location) {
     $scope.fBstatusChangeCallback = function(response) {
             console.log('statusChangeCallback');
             console.log(response);
+        
 
             if (response.status === 'connected') {
                   // Logged into your app and Facebook.

@@ -66,45 +66,6 @@ function createItem(obj) {
         }
     });
 }
-function scanData() {
-    document.getElementById('textarea').innerHTML = "";
-    document.getElementById('textarea').innerHTML += "Scanning for movies between 2005 and 2016." + "\n";
-
-    var params = {
-        TableName: "Movies",
-        ProjectionExpression: "#yr, title, info.rating",
-        FilterExpression: "#yr between :start_yr and :end_yr",
-        ExpressionAttributeNames: {
-            "#yr": "year"
-        },
-        ExpressionAttributeValues: {
-            ":start_yr": "2005",
-            ":end_yr": "2016"
-        }
-    };
-
-    docClient.scan(params, onScan);
-
-    function onScan(err, data) {
-        if (err) {
-            document.getElementById('textarea').innerHTML += "Unable to scan the table: " + "\n" + JSON.stringify(err, undefined, 2);
-        } else {
-            // Print all the movies
-            document.getElementById('textarea').innerHTML += "Scan succeeded: " + "\n";
-            data.Items.forEach(function(movie) {
-                if(typeof movie.info !== 'undefined')
-                    document.getElementById('textarea').innerHTML += movie.year + ": " + movie.title + " - rating: " + movie.info.rating + "\n";
-            else
-                    document.getElementById('textarea').innerHTML += movie.year + ": " + movie.title + "\n";
-            });
-
-            // Continue scanning if we have more movies (per scan 1MB limitation)
-            document.getElementById('textarea').innerHTML += "Scanning for more..." + "\n";
-            params.ExclusiveStartKey = data.LastEvaluatedKey;
-            docClient.scan(params, onScan);            
-        }
-    }
-}
 function getList(facebookId, createDateTime) {
     var params = {
         TableName : "extensibleLists", 
@@ -149,6 +110,7 @@ function getAllLists(callback) {
     var params = {
         TableName : "extensibleLists", 
         KeyConditionExpression: "#fbid = :fbuserid",
+        ScanIndexForward: false,
         ExpressionAttributeNames:{
             "#fbid": "facebookId"
         },
@@ -167,6 +129,26 @@ function getAllLists(callback) {
             callback(data);
             //myLists = data;
             //angular.element(document.getElementById('baseApp')).scope().getLists();
+        }
+    });
+}
+function deleteItem(fbid, creationDate) {
+    var table = "extensibleLists";
+    var facebookId = fbid;
+    var createDateTime = creationDate;
+
+    var params = {
+        TableName:table,
+        Key:{
+            "facebookId":fbid,
+            "createDateTime":creationDate
+        }
+    };
+    docClient.delete(params, function(err, data) {
+        if (err) {
+            console.log("Unable to delete item: " + "\n" + JSON.stringify(err, undefined, 2));
+        } else {
+            console.log("DeleteItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2));
         }
     });
 }

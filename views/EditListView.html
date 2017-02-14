@@ -6,7 +6,7 @@
     <div class="w3-row">
     <form ng-submit="addItem()" name="addForm">
       <div class="w3-col s10">
-        <input id="addField" placeholder="Add shopping items here" ng-model="addMe" class="w3-input w3-border w3-padding">
+        <input id="addField" placeholder="Add list items here" ng-model="addMe" class="w3-input w3-border w3-padding">
       </div>
       <div class="w3-col s2">
         <button ng-click="addItem()" class="w3-btn w3-padding w3-green">Add&raquo;</button>
@@ -15,11 +15,12 @@
     </div>
   </div>
   <ul class="w3-ul">
-    <li ng-repeat="x in products" class="w3-padding-16" style="text-decoration:{{x.isChecked==true?'line-through':'none'}}" ng-drop="true" ng-drop-success="onDropComplete($index, $data,$event)">
+    <li ng-repeat="x in products" class="w3-padding-16" ng-drop="true" ng-drop-success="onDropComplete($index, $data,$event)">
         <div ng-drag="true" ng-drag-data="x" ng-class="x.item" ng-drag-start="onDragStart()">
-            <input class="w3-check" type="checkbox" ng-checked="x.isChecked" ng-model="x.isChecked">
-            <span style="font-size: 20px; line-height: 32px;">{{x.item}}</span>
-            <span ng-click="removeItem($index)" style="cursor:pointer;" class="w3-right w3-margin-right">X</span>
+            <div style="float: left; position: relative; width: 10%;"><input class="w3-check" type="checkbox" ng-checked="x.isChecked" ng-model="x.isChecked"></div>
+            <div style="float: left; width: 80%;"><span style="font-size: 18px; line-height: 32px; text-decoration:{{x.isChecked==true?'line-through':'none'}}">{{x.item}}</span></div>
+            <div style="font-size: 18px; line-height: 32px; float: left; width: 10%;"><span ng-click="removeItem($index)" style="cursor:pointer;" class="w3-right w3-margin-right">X</span></div>
+            <div style="clear: both;"></div>
         </div>
     </li>
   </ul>

@@ -18,7 +18,7 @@ function ShoppingListItem(isChecked, isCategory, item) {
 function newList(fbid, name, listName) {
     var newList = new ShoppingList();
     newList.facebookId = fbid;
-    newList.createDateTime = new Date(+new Date + 12096e5).valueOf().toString();
+    newList.createDateTime = new Date().valueOf().toString();
     newList.info.currentUserName = name;
     newList.info.listName = listName;
     newList.info.items = [];

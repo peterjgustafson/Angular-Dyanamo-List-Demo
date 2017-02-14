@@ -83,10 +83,35 @@ app.controller("selectListController", function($scope, $location) {
         }
         return false;
     }
-    
+    $scope.formatDate = function (dateOrd) {
+        //non-case-specific check for duplicates
+       var dateAsString = new Date(eval(dateOrd));
+        
+        return (dateAsString.getMonth() + 1) + "/" + dateAsString.getDate() + "/" + dateAsString.getFullYear() + " @ " + dateAsString.getHours() + ":" + dateAsString.getMinutes();
+    }
     //remove
+    $scope.removeList = function (x) {
+        $.toast().reset('all');
+    	
+        
+        $.toast({
+            text: 'Are you sure you want to delete ' + $scope.lists[x].info.listName + ' from your list. <a href="javascript: angular.element(document.getElementById(\'baseApp\')).scope().confirmDelete(' + x + ');" class=".jq-toast-single">Confirm</a>',
+            hideAfter: 5000,
+            position : 'bottom-center',
+            showHideTransition: "slide"
+        });
+    }
     
-    //undo
+    //confirm delete
+    $scope.confirmDelete = function (x) {
+        
+        $.toast().reset('all');
+        
+        deleteItem($scope.lists[x].facebookId, $scope.lists[x].createDateTime);
+        myLists.Items.splice(x, 1);
+        $scope.lists = myLists.Items;
+        $scope.$apply();
+    }
     
     
 });
