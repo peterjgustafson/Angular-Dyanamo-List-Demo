@@ -18,7 +18,7 @@
         }
 
         [ng-drag].drag-over {
-            border: solid 1px #efefdf;
+            border: solid 1px gray;
         }
 
         [ng-drag].dragging {
@@ -31,7 +31,7 @@
         }
 
         [ng-drop].drag-enter {
-            border: solid 5px gr#dedede;
+            border: solid 5px gray;
         }
 
         [ng-drop] span.title {

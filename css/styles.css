@@ -1,0 +1,9 @@
+.container {margin-left: auto !important; margin-right: auto !important; padding-left: 0px !important; padding-right: 0px !important; font-family: 'Architects Daughter', cursive !important;}
+
+#listName {font-weight: bold;}
+
+h3 {!important;font-family: 'Lato', sans-serif; !important;}
+
+.w3-check {margin-right: 6px !important;}
+
+input[type=checkbox].w3-check,input[type=radio].w3-radio{width:32px;height:32px;position:relative;top:0px; margin-right: 6px; display: block; float: left;}

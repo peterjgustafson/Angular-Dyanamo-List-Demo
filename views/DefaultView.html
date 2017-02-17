@@ -5,7 +5,7 @@
 <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" style="display: block; margin: auto;">
 </fb:login-button></div>
     <div id="goToSelect" class="w3-container w3-padding-4" ng-show="isLoggedInFb" style="width: 100%; align: center">
-        <button ng-click="goto('Select');" class="w3-btn w3-padding w3-green" style="font-size: 20px; display: block; margin: auto;">Get Started&raquo;</button>
+        <button  ui-sref="Select" class="w3-btn w3-padding w3-green" style="font-size: 20px; display: block; margin: auto;">Get Started&raquo;</button>
     </div>
     <div id="loading" class="w3-container w3-padding-4" ng-hide="isLoggedInFb||showFBLogin" style="width: 100%; align: center">
         <img src="//dev3.judegustafson.com/Shopping-List-App/images/infinity.gif" style="display: block; margin: auto;">

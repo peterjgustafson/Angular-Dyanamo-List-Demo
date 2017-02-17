@@ -18,7 +18,7 @@
     <li ng-repeat="x in products" class="w3-padding-16" ng-drop="true" ng-drop-success="onDropComplete($index, $data,$event)">
         <div ng-drag="true" ng-drag-data="x" ng-class="x.item" ng-drag-start="onDragStart()">
             <div style="float: left; position: relative; width: 10%;"><input class="w3-check" type="checkbox" ng-checked="x.isChecked" ng-model="x.isChecked"></div>
-            <div style="float: left; width: 80%;"><span style="font-size: 18px; line-height: 32px; text-decoration:{{x.isChecked==true?'line-through':'none'}}">{{x.item}}</span></div>
+            <div style="float: left; width: 80%;"><span style="font-size: 18px; line-height: 32px; text-decoration:{{x.isChecked==true?'line-through':'none'}}"><p ng-bind-html="x.item">{{x.item}}</p></span></div>
             <div style="font-size: 18px; line-height: 32px; float: left; width: 10%;"><span ng-click="removeItem($index)" style="cursor:pointer;" class="w3-right w3-margin-right">X</span></div>
             <div style="clear: both;"></div>
         </div>

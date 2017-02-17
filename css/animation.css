@@ -1,0 +1,65 @@
+.slide.ng-enter > div,
+.slide.ng-leave > div {
+  -webkit-transition:0.5s linear all;
+  -moz-transition:0.5s linear all;
+  -o-transition:0.5s linear all;
+  transition:0.5s linear all;
+}
+
+main.ng-enter {
+  /* transition on enter for .5s */
+  transition: .5s;
+  /* start with opacity 0 (invisible) */
+  opacity: 0;
+}
+main.ng-enter-active {
+  /* end with opacity 1 (fade in) */
+  opacity: 1;
+}
+
+.slide.ng-enter { }        /* starting animations for enter */
+.slide.ng-enter-active { } /* terminal animations for enter */
+.slide.ng-leave { }        /* starting animations for leave */
+.slide.ng-leave-active { }  
+
+.reveal-animation.ng-enter {
+    -webkit-animation: Fade-Enter-Anime .5s;
+    -moz-animation: Fade-Enter-Anime .5s;
+    animation: Fade-Enter-Anime .5s;
+  }
+  .Content-Fade-Leave {
+    -webkit-animation: Fade-Leave-Anime .5s;
+    -moz-animation: Fade-Leave-Anime .5s;
+    animation: Fade-Leave-Anime .5s;
+  }
+
+  @keyframes Fade-Enter-Anime {
+       from { opacity: 0; }
+       to { opacity: 1; }
+     }
+
+  @keyframes Fade-Leave-Anime {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+
+  @-webkit-keyframes Fade-Enter-Anime {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @-webkit-keyframes Fade-Leave-Anime {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  @-moz-keyframes Fade-Enter-Anime {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @-moz-keyframes Fade-Leave-Anime {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }

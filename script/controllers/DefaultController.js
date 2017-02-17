@@ -1,28 +1,4 @@
-var app = angular.module("myShoppingList", ['ngRoute','ngDraggable']);
-app.config(function($routeProvider) {
-    //$locationProvider.html5Mode(true);
-    $routeProvider
-        // route for the home page
-        .when('/Edit', {
-            templateUrl : 'views/EditListView.html',
-            controller  : 'editListController'
-        })
-
-        .when('/Select', {
-            templateUrl : 'views/SelectListView.html',
-            controller  : 'selectListController'
-        })
-
-        .when('/', {
-            templateUrl : 'views/DefaultView.html',
-            controller  : 'defaultController'
-        })
-            
-});
-app.config(['$locationProvider', function ($locationProvider) {
-    $locationProvider.html5Mode(true);
-}]);
-app.controller("defaultController", function($scope, $window, $location) {
+app.controller("defaultController", function($scope, $window, $location, $state) {
     if(usersId == 0) {
         $scope.showFBLogin = false;
         $scope.isLoggedInFb = false;
@@ -31,9 +7,9 @@ app.controller("defaultController", function($scope, $window, $location) {
         $scope.showFBLogin = false;
         $scope.isLoggedInFb = true;
     }
-    
     $scope.goto = function(path){
-        $location.path(path);
+        //$location.path(path);
+        $state.go(path);
     }
     $window.fbAsyncInit = function() {
         FB.init({
@@ -84,14 +60,18 @@ app.controller("defaultController", function($scope, $window, $location) {
             } else if (response.status === 'not_authorized') {
               // The person is logged into Facebook, but not your app.
                 console.log('Please log  into this app.');
-                $scope.showFBLogin = true;
-                        $scope.$apply();
+                
+                $scope.$apply(function(){
+                    $scope.showFBLogin = true;
+                });
             } else {
               // The person is not logged into Facebook, so we're not sure if
               // they are logged into this app or not.
                 console.log('Please log into Facebook.');
-                $scope.showFBLogin = true;
-                        $scope.$apply();
+                
+                $scope.$apply(function(){
+                            $scope.showFBLogin = true;
+                });
             }
           }
     $scope.getFbUserInfo = function(callback) {

@@ -84,7 +84,7 @@ app.controller("editListController", function($scope, $location) {
         
         if (!$scope.detectDuplicates()) {
         	console.log($scope.detectDuplicates());
-            $scope.products.push(new ShoppingListItem(false, false, $scope.addMe));
+            $scope.products.push(new ShoppingListItem(false, false, $scope.detectURL($scope.addMe)));
             $scope.addMe = "";
             myListObj.info.items = $scope.products;
             createItem(myListObj);
@@ -101,6 +101,14 @@ app.controller("editListController", function($scope, $location) {
         $("#addField").blur();
         $scope.addMe = "";
         return;
+    }
+    $scope.detectURL = function (text) {
+        var urlRegex = /(https?:\/\/[^\s]+)/g;
+        return text.replace(urlRegex, function(url) {
+            return '<a href="' + url + '">' + url.substr(0,30) + '</a>';
+        });
+        // or alternatively
+        // return text.replace(urlRegex, '<a href="$1">$1</a>')
     }
     $scope.detectDuplicates = function () {
         //non-case-specific check for duplicates
@@ -125,7 +133,7 @@ app.controller("editListController", function($scope, $location) {
         
         //createItem(myListObj);
         $.toast({
-            text: $scope.currentItemName + ' has been deleted from your list.' + '<a href="javascript: angular.element(document.getElementById(\'baseApp\')).scope().undo();">undo</a>',
+            text: $scope.currentItemName + ' has been deleted from your list.' + '<a href="javascript: angular.element(document.getElementById(\'baseApp\')).scope().$$childHead.undo();">undo</a>',
             hideAfter: 5000,
             position : 'bottom-center',
             showHideTransition: "slide"
@@ -133,7 +141,7 @@ app.controller("editListController", function($scope, $location) {
     }
     $scope.undo = function () {
     	//a method to undo deleting from the list
-        if($scope.currentItemIndex + 1 < $scope.products.length)
+        if($scope.currentItemIndex < $scope.products.length)
             $scope.products.splice($scope.currentItemIndex, 0, $scope.currentItem);
         else
             $scope.products.push($scope.currentItem);
@@ -163,7 +171,7 @@ app.controller("editListController", function($scope, $location) {
     $scope.onDragStart = function() {
         $scope.touchLocked = true;
     }
-    $('#appBody').bind('touchmove',function(e){
+    $('#baseApp').bind('touchmove',function(e){
         if($scope.touchLocked)  
             e.preventDefault();
     });

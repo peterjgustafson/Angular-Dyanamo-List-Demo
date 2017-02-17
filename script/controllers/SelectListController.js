@@ -9,8 +9,8 @@ app.controller("selectListController", function($scope, $location) {
     getAllLists(function(data){
         if (data.Count != 0) {//this will make sure it doesn't break for new users
             myLists = data;//Existing User
-            $scope.lists = myLists.Items;
-            $scope.$apply();
+            
+            $scope.$apply(function(){$scope.lists = myLists.Items;});
         }
         else {
             //
@@ -23,8 +23,8 @@ app.controller("selectListController", function($scope, $location) {
         $scope.lists = myLists.Items;*/
     
     $scope.getLists = function(){
-        $scope.lists = myLists.Items;
-        $scope.$apply();
+        
+        $scope.$apply(function(){$scope.lists = myLists.Items;});
     }
     $scope.selectList = function(x){
         myListObj = new ShoppingList();
@@ -54,7 +54,7 @@ app.controller("selectListController", function($scope, $location) {
         if (!$scope.detectDuplicates()) {
         	console.log($scope.detectDuplicates());
             myListObj = newList(usersId, usersName, $scope.addMe);
-            $scope.lists.push(myListObj);
+            $scope.lists.unshift(myListObj);
             $scope.addMe = "";
             myLists.Items = $scope.lists;
             createItem(myListObj);
@@ -95,7 +95,7 @@ app.controller("selectListController", function($scope, $location) {
     	
         
         $.toast({
-            text: 'Are you sure you want to delete ' + $scope.lists[x].info.listName + ' from your list. <a href="javascript: angular.element(document.getElementById(\'baseApp\')).scope().confirmDelete(' + x + ');" class=".jq-toast-single">Confirm</a>',
+            text: 'Are you sure you want to delete ' + $scope.lists[x].info.listName + ' from your list. <a href="javascript: angular.element(document.getElementById(\'baseApp\')).scope().$$childHead.confirmDelete(' + x + ');" class=".jq-toast-single">Confirm</a>',
             hideAfter: 5000,
             position : 'bottom-center',
             showHideTransition: "slide"
