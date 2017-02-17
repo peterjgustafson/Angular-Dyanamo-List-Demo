@@ -1,9 +1,16 @@
-app.controller("selectListController", function($scope, $location) {
+app.controller("selectListController", function($scope, $location, $state) {
     $scope.lists = [];
     
     if (typeof usersId == "undefined" || usersId == 0) {
-        $location.path("/");
+        $state.go("Home");
         return
+    }
+    
+    if (myLists.Count != 0) {
+            $scope.viewTitle = "Select a list to edit";
+    }
+    else {
+            $scope.viewTitle = "Create your first list";
     }
     
     getAllLists(function(data){
@@ -11,9 +18,6 @@ app.controller("selectListController", function($scope, $location) {
             myLists = data;//Existing User
             
             $scope.$apply(function(){$scope.lists = myLists.Items;});
-        }
-        else {
-            //
         }
     });
     
@@ -40,11 +44,12 @@ app.controller("selectListController", function($scope, $location) {
             });
         }
         console.log(angular.toJson(myListObj));
-        $location.path("/Edit");
+        $state.go("Edit");
     }
     $scope.goto = function(path){
-        $location.path(path);
-        $scope.$apply();
+        $scope.$apply(function(){
+            $state.go(path);
+        });
     }
     $scope.addItem = function () {
         if (!$scope.addMe) {return;}

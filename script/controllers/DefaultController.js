@@ -4,9 +4,11 @@ app.controller("defaultController", function($scope, $window, $location, $state)
         $scope.isLoggedInFb = false;
     }
     else {
+        $scope.welcomeMsg = "Welcome back " + usersName + "!";
         $scope.showFBLogin = false;
         $scope.isLoggedInFb = true;
     }
+    
     $scope.goto = function(path){
         //$location.path(path);
         $state.go(path);
@@ -52,6 +54,10 @@ app.controller("defaultController", function($scope, $window, $location, $state)
                     getAllLists(function(data){
                         myLists = data;
                         $scope.$apply(function(){
+                            if(myLists.Count == 0)
+                                $scope.welcomeMsg = "Welcome " + usersName + "!";
+                            else
+                                $scope.welcomeMsg = "Welcome back " + usersName + "!";
                             $scope.showFBLogin = false;
                             $scope.isLoggedInFb = true;
                         });

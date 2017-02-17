@@ -2,10 +2,12 @@
     <h3 id="welcome">My Angular.js Amazon DynamoDB shopping / to-do list Application</h3>
     <div id="welcomeMsg" class="w3-container w3-padding-4"></div>
     <div id="facebookLogin" class="w3-container w3-padding-4" ng-show="showFBLogin" style="width: 100%; align: center">
+        A Facebook login is required to use this app. I am utilizing your facebook login as an authentication method to secure access to AWS Dyanamo DB using the Federated Login feature in AWS Cognito Service. The only information that I store is your public facebookid.
 <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" style="display: block; margin: auto;">
 </fb:login-button></div>
     <div id="goToSelect" class="w3-container w3-padding-4" ng-show="isLoggedInFb" style="width: 100%; align: center">
-        <button  ui-sref="Select" class="w3-btn w3-padding w3-green" style="font-size: 20px; display: block; margin: auto;">Get Started&raquo;</button>
+        <span ng-bind="welcomeMsg"></span>
+        <button  ui-sref="Select" class="w3-btn w3-padding w3-green" style="font-size: 20px; display: block; margin-left: auto;">Try the Demo&raquo;</button>
     </div>
     <div id="loading" class="w3-container w3-padding-4" ng-hide="isLoggedInFb||showFBLogin" style="width: 100%; align: center">
         <img src="//dev3.judegustafson.com/Shopping-List-App/images/infinity.gif" style="display: block; margin: auto;">
